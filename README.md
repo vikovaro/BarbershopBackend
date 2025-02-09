@@ -14,3 +14,15 @@
 bun install
 ```
 
+#### Для призмы необходимо прописать:
+
+```bash
+bun prisma generate
+bun prisma db push
+```
+
+## Содержимое .env файла:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
+```
