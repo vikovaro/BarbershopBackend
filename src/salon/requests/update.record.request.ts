@@ -42,8 +42,13 @@ export class UpdateRecordRequest implements IUpdateRecordRequest {
     @Min(1)
     @Expose()
     serviceId?: number;
-}
 
+    @ApiPropertyOptional({ example: "Additional notes about the appointment" })
+    @IsString()
+    @IsOptional()
+    @Expose()
+    notes?: string;
+}
 
 export interface IUpdateRecordRequest {
     id: number;
@@ -52,4 +57,5 @@ export interface IUpdateRecordRequest {
     clientPhone?: string;
     employeeId?: number;
     serviceId?: number;
+    notes?: string;
 }

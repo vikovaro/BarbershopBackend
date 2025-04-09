@@ -8,6 +8,7 @@ import {
     HttpStatus,
     SerializeOptions,
     Query,
+    BadRequestException,
 } from '@nestjs/common';
 import { SalonService } from './salon.service';
 import { ApiResponse } from '@nestjs/swagger';
@@ -22,10 +23,83 @@ import { CreateRecordRequest } from './requests/create.record.request';
 import { GetAllRecordsResponse } from './responses/pagination.dto.response';
 import { GetRecordsPagination } from './requests/get.records.pagingation';
 import { UpdateRecordRequest } from './requests/update.record.request';
+import { UserResponse } from './responses/user.response';
+import { CreateUserRequest } from './requests/create.user.request';
+import { UpdateUserRequest } from './requests/update.user.request';
 
 @Controller('salon')
 export class SalonController {
     constructor(private readonly salonService: SalonService) {
+    }
+
+    // USER
+    @Put('/user/create')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'create user',
+        type: UserResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: UserResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async createUser(@Body() createUserRequest: CreateUserRequest): Promise<UserResponse> {
+        return await this.salonService.createUser(createUserRequest);
+    }
+
+    @Get('/user/get')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'get user',
+        type: UserResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: UserResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async getUser(@Query('id') id: number) {
+        return await this.salonService.getUserById(+id);
+    }
+
+    @Delete('/user/delete')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'delete user',
+        type: Boolean,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: Boolean,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async deleteUser(@Query('id') id: number) {
+        try {
+            await this.salonService.deleteUserById(+id);
+            return true;
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
+
+    @Patch('/user/update')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'update user',
+        type: UserResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: UserResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async updateUser(@Body() updateUserRequest: UpdateUserRequest): Promise<UserResponse> {
+        return await this.salonService.updateUserById(updateUserRequest);
     }
 
     // EMPLOYEE
@@ -188,7 +262,12 @@ export class SalonController {
         enableImplicitConversion: true,
     })
     async updateRecord(@Body() updateRecordRequest: UpdateRecordRequest): Promise<RecordResponse> {
-        return await this.salonService.updateRecord(updateRecordRequest);
+        const record = await this.salonService.updateRecord(updateRecordRequest);
+        return {
+            ...record,
+            employee: record.employee,
+            service: record.service,
+        };
     }
 
     @Get('/record/get')

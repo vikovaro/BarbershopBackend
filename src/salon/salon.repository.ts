@@ -10,23 +10,78 @@ import { IGetRecordsResponse } from './responses/get.records.response';
 import { UpdateEmployeeRequest } from './requests/update.employee.request';
 import { UpdateServiceRequest } from './requests/update.service.request';
 import { UpdateRecordRequest } from './requests/update.record.request';
-import { IsOptional } from 'class-validator';
 import { IGetEmployeesResponse } from './responses/get.employee.response';
 import { IGetServiceResponse } from './responses/get.service.response';
 import { IRecordResponse } from './responses/record.response';
+import { CreateUserRequest } from './requests/create.user.request';
+import { IUserResponse } from './responses/user.response';
+import * as bcrypt from 'bcrypt';
+import { UpdateUserRequest } from './requests/update.user.request';
 
 @Injectable()
 export class SalonRepository {
     constructor(private readonly prisma: PrismaClient) {
     }
 
-    // EMPLOYEE
+    // USER
+    async createUser(createUserRequest: CreateUserRequest): Promise<IUserResponse> {
+        return this.prisma.user.create({
+            data: {
+                login: createUserRequest.login,
+                password: await bcrypt.hash(createUserRequest.password, 10),
+                phone: createUserRequest.phone,
+                full_name: createUserRequest.full_name,
+            },
+            select: {
+                id: true,
+                login: true,
+                phone: true,
+                full_name: true,
+            },
+        });
+    }
 
+    async getUserById(id: number) {
+        return this.prisma.user.findUnique({
+            where: {
+                id: id,
+            },
+            select: {
+                id: true,
+                login: true,
+                phone: true,
+                full_name: true,
+            },
+        });
+    }
+
+    async updateUserById(updateUserRequest: UpdateUserRequest): Promise<IUserResponse> {
+        return this.prisma.user.update({
+            where: {
+                id: updateUserRequest.id,
+            },
+            data: {
+                login: updateUserRequest.login ?? undefined,
+                password: updateUserRequest.password ? updateUserRequest.password : undefined,
+                phone: updateUserRequest.phone ?? undefined,
+                full_name: updateUserRequest.full_name ?? undefined,
+            },
+            select: {
+                id: true,
+                login: true,
+                phone: true,
+                full_name: true,
+            },
+        });
+    }
+
+    // EMPLOYEE
     async createEmployee(createEmployeeRequest: CreateEmployeeRequest): Promise<IEmployeeResponse> {
         return this.prisma.employee.create({
             data: {
                 name: createEmployeeRequest.name,
                 employeePhone: createEmployeeRequest.employeePhone,
+                userId: createEmployeeRequest.userId,
             },
         });
     }
@@ -157,6 +212,7 @@ export class SalonRepository {
                 status: EStatus.PENDING,
                 employeeId: createRecordRequest.employeeId,
                 serviceId: createRecordRequest.serviceId,
+                notes: createRecordRequest.notes ? createRecordRequest.notes : undefined,
             },
             include: {
                 service: true,
@@ -166,6 +222,7 @@ export class SalonRepository {
 
         return {
             ...record,
+            notes: record.notes ?? undefined,
             service: {
                 ...record.service,
                 price: parseFloat(parseFloat(record.service.price.toString()).toFixed(2)),
@@ -178,10 +235,18 @@ export class SalonRepository {
             where: {
                 id: id,
             },
+            include: {
+                service: true,
+                employee: true,
+            }
         });
     }
 
-    async getRecordsWithPagination(limit: number, offset: number, status?: EStatus): Promise<IGetRecordsResponse> {
+    async getRecordsWithPagination(
+        limit: number,
+        offset: number,
+        status?: EStatus
+    ): Promise<IGetRecordsResponse> {
         const records = await this.prisma.record.findMany({
             skip: offset,
             take: limit,
@@ -196,10 +261,14 @@ export class SalonRepository {
 
         const formattedRecords = records.map((record) => ({
             ...record,
+            notes: record.notes ?? undefined,
             service: {
                 ...record.service,
                 price: Math.round(parseFloat(record.service.price.toString()) * 100) / 100,
             },
+            employee: {
+                ...record.employee,
+            }
         }));
 
         return {
@@ -239,6 +308,7 @@ export class SalonRepository {
                 status: updateRecordRequest.status ? updateRecordRequest.status : undefined,
                 employeeId: updateRecordRequest.employeeId ? updateRecordRequest.employeeId : undefined,
                 serviceId: updateRecordRequest.serviceId ? updateRecordRequest.serviceId : undefined,
+                notes: updateRecordRequest.notes ? updateRecordRequest.notes : undefined,
             },
             include: {
                 service: true,
@@ -248,10 +318,47 @@ export class SalonRepository {
 
         return {
             ...record,
+            notes: record.notes ?? undefined,
             service: {
                 ...record.service,
                 price: parseFloat(parseFloat(record.service.price.toString()).toFixed(2)),
             }
         };
+    }
+
+    async hasEmployeeRecords(employeeId: number): Promise<boolean> {
+        const count = await this.prisma.record.count({
+            where: {
+                employeeId: employeeId,
+            },
+        });
+        return count > 0;
+    }
+
+    async deleteUserById(userId: number) {
+        const employee = await this.prisma.employee.findUnique({
+            where: {
+                userId: userId,
+            },
+        });
+
+        if (employee) {
+            const hasRecords = await this.hasEmployeeRecords(employee.id);
+            if (hasRecords) {
+                throw new Error('Cannot delete user with active records.');
+            }
+
+            await this.prisma.employee.delete({
+                where: {
+                    id: employee.id,
+                },
+            });
+        }
+
+        return this.prisma.user.delete({
+            where: {
+                id: userId,
+            },
+        });
     }
 }

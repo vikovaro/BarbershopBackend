@@ -39,6 +39,10 @@ export class RecordResponse implements IRecordResponse {
 
     @ApiProperty()
     status: Status;
+
+    @ApiProperty({ example: "Additional notes about the appointment", required: false })
+    @Expose()
+    notes?: string;
 }
 
 export interface IRecordResponse {
@@ -51,4 +55,5 @@ export interface IRecordResponse {
     service: IServiceResponse;
     appointmentDatetime: Date,
     status: Status;
+    notes?: string;
 }

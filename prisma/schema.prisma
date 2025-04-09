@@ -8,6 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int       @id @default(autoincrement())
+  login     String    @unique
+  password  String
+  phone     String
+  full_name String
+  employee  Employee?
+}
+
 model Service {
   id    Int     @id @default(autoincrement())
   type  String  @db.VarChar(255)
@@ -20,6 +29,8 @@ model Employee {
   id            Int    @id @default(autoincrement())
   name          String @db.VarChar(255)
   employeePhone String @db.VarChar(20)
+  user          User   @relation(fields: [userId], references: [id])
+  userId        Int    @unique
 
   records Record[]
 }
@@ -30,6 +41,7 @@ model Record {
   clientPhone         String   @db.VarChar(20)
   appointmentDatetime DateTime
   status              Status
+  notes               String?  @db.VarChar(255)
 
   employeeId Int
   employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
