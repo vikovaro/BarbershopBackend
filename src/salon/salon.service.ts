@@ -14,6 +14,8 @@ import { GetRecordsPagination } from './requests/get.records.pagingation';
 import { CreateUserRequest } from './requests/create.user.request';
 import { IUserResponse } from './responses/user.response';
 import { UpdateUserRequest } from './requests/update.user.request';
+import { IGetUsersResponse } from './responses/get.users.response';
+import { IGetServiceResponse } from './responses/get.service.response';
 
 @Injectable()
 export class SalonService {
@@ -46,6 +48,10 @@ export class SalonService {
         }
 
         return await this.salonRepository.updateUserById(updateUserRequest);
+    }
+
+    async getUsersWithPagination(limit: number, offset: number): Promise<IGetUsersResponse> {
+        return await this.salonRepository.getUsersWithPagination(limit, offset);
     }
 
     // EMPLOYEE
@@ -125,6 +131,10 @@ export class SalonService {
         }
 
         return await this.salonRepository.updateService(updateServiceRequest);
+    }
+
+    async getServicesWithPagination(limit: number, offset: number): Promise<IGetServiceResponse> {
+        return await this.salonRepository.getServicesWithPagination(limit, offset);
     }
 
     // RECORD

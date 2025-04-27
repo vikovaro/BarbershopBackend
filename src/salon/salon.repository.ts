@@ -17,6 +17,7 @@ import { CreateUserRequest } from './requests/create.user.request';
 import { IUserResponse } from './responses/user.response';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserRequest } from './requests/update.user.request';
+import { IGetUsersResponse } from './responses/get.users.response';
 
 @Injectable()
 export class SalonRepository {
@@ -75,6 +76,20 @@ export class SalonRepository {
         });
     }
 
+    async getUsersWithPagination(limit: number, offset: number): Promise<IGetUsersResponse> {
+        const users = await this.prisma.user.findMany({
+            skip: offset,
+            take: limit,
+        });
+
+        const totalCount = await this.prisma.user.count();
+
+        return {
+            users: users,
+            count: totalCount,
+        };
+    }
+
     // EMPLOYEE
     async createEmployee(createEmployeeRequest: CreateEmployeeRequest): Promise<IEmployeeResponse> {
         return this.prisma.employee.create({
@@ -120,7 +135,7 @@ export class SalonRepository {
             take: limit,
         });
 
-        const totalCount = await this.prisma.record.count();
+        const totalCount = await this.prisma.employee.count();
 
         return {
             employees: employees,
@@ -162,7 +177,7 @@ export class SalonRepository {
             take: limit,
         });
 
-        const totalCount = await this.prisma.record.count();
+        const totalCount = await this.prisma.service.count();
         const formattedServices = services.map((service) => ({
             ...service,
             price: Math.round(parseFloat(service.price.toString()) * 100) / 100,

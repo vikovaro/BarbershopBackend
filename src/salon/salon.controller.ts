@@ -20,12 +20,16 @@ import { UpdateServiceRequest } from './requests/update.service.request';
 import { UpdateEmployeeRequest } from './requests/update.employee.request';
 import { RecordResponse } from './responses/record.response';
 import { CreateRecordRequest } from './requests/create.record.request';
-import { GetAllRecordsResponse } from './responses/pagination.dto.response';
+import { GetRecordsResponse } from './responses/get.records.response';
 import { GetRecordsPagination } from './requests/get.records.pagingation';
 import { UpdateRecordRequest } from './requests/update.record.request';
 import { UserResponse } from './responses/user.response';
 import { CreateUserRequest } from './requests/create.user.request';
 import { UpdateUserRequest } from './requests/update.user.request';
+import { GetUsersResponse } from './responses/get.users.response';
+import { GetPaginationRequest } from './requests/get.pagination';
+import { GetEmployeesResponse } from './responses/get.employee.response';
+import { GetServiceResponse } from './responses/get.service.response';
 
 @Controller('salon')
 export class SalonController {
@@ -102,6 +106,22 @@ export class SalonController {
         return await this.salonService.updateUserById(updateUserRequest);
     }
 
+    @Get('/user/all')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'get all users with pagination',
+        type: GetUsersResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: GetUsersResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async getUsers(@Body() getPaginationRequest: GetPaginationRequest) {
+        return await this.salonService.getUsersWithPagination(getPaginationRequest.limit, getPaginationRequest.offset);
+    }
+
     // EMPLOYEE
     @Put('/employee/create')
     @ApiResponse({
@@ -164,7 +184,24 @@ export class SalonController {
         enableImplicitConversion: true,
     })
     async deleteEmployee(@Query('id') id: number) {
-        return await this.salonService.deleteEmployeeById(+id);
+        await this.salonService.deleteEmployeeById(+id);
+        return true;
+    }
+
+    @Get('/employee/all')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'get all employees with pagination',
+        type: GetEmployeesResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: GetEmployeesResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async getEmployees(@Body() getPaginationRequest: GetPaginationRequest) {
+        return await this.salonService.getEmployeesWithPagination(getPaginationRequest.limit, getPaginationRequest.offset);
     }
 
     // SERVICE
@@ -229,7 +266,24 @@ export class SalonController {
         enableImplicitConversion: true,
     })
     async deleteService(@Query('id') id: number) {
-        return await this.salonService.deleteServiceById(+id);
+        await this.salonService.deleteServiceById(+id);
+        return true;
+    }
+
+    @Get('/service/all')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'get all services with pagination',
+        type: GetServiceResponse,
+    })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: GetServiceResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async getServices(@Body() getPaginationRequest: GetPaginationRequest) {
+        return await this.salonService.getServicesWithPagination(getPaginationRequest.limit, getPaginationRequest.offset);
     }
 
     //RECORD
@@ -290,11 +344,11 @@ export class SalonController {
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'get all records with pagination',
-        type: GetAllRecordsResponse,
+        type: GetRecordsResponse,
     })
     @SerializeOptions({
         strategy: 'exposeAll',
-        type: GetAllRecordsResponse,
+        type: GetRecordsResponse,
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
@@ -315,6 +369,7 @@ export class SalonController {
         enableImplicitConversion: true,
     })
     async deleteRecord(@Query('id') id: number) {
-        return await this.salonService.deleteRecordById(+id);
+        await this.salonService.deleteRecordById(+id);
+        return true;
     }
 }
