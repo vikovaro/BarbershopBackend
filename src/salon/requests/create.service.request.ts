@@ -9,12 +9,11 @@ export class CreateServiceRequest implements ICreateServiceRequest {
     @Expose()
     price: number;
 
-    @ApiProperty({ example: "ноготочки" })
+    @ApiProperty({ example: 'ноготочки' })
     @IsString()
     @Expose()
     type: string;
 }
-
 
 export interface ICreateServiceRequest {
     type: string;

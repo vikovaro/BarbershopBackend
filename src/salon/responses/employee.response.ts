@@ -6,11 +6,11 @@ export class EmployeeResponse implements IEmployeeResponse {
     @Expose()
     id: number;
 
-    @ApiProperty({ example: "Name Surname" })
+    @ApiProperty({ example: 'Name Surname' })
     @Expose()
     name: string;
 
-    @ApiProperty({ example: "1234567" })
+    @ApiProperty({ example: '1234567' })
     @Expose()
     employeePhone: string;
 }

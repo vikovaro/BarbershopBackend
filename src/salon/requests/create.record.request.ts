@@ -3,12 +3,12 @@ import { IsInt, IsString, Min, IsOptional } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 export class CreateRecordRequest implements ICreateRecordRequest {
-    @ApiProperty({ example: "Name Surname" })
+    @ApiProperty({ example: 'Name Surname' })
     @IsString()
     @Expose()
     clientName: string;
 
-    @ApiProperty({ example: "12345678" })
+    @ApiProperty({ example: '12345678' })
     @IsString()
     @Min(1)
     @Expose()
@@ -26,7 +26,7 @@ export class CreateRecordRequest implements ICreateRecordRequest {
     @Expose()
     serviceId: number;
 
-    @ApiProperty({ example: "Additional notes about the appointment", required: false })
+    @ApiProperty({ example: 'Additional notes about the appointment', required: false })
     @IsString()
     @IsOptional()
     @Expose()

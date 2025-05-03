@@ -3,12 +3,12 @@ import { IsString, Min, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateEmployeeRequest implements ICreateEmployeeRequest {
-    @ApiProperty({ example: "Name Surname" })
+    @ApiProperty({ example: 'Name Surname' })
     @IsString()
     @Expose()
     name: string;
 
-    @ApiProperty({ example: "123456789" })
+    @ApiProperty({ example: '123456789' })
     @IsString()
     @Min(1)
     @Expose()

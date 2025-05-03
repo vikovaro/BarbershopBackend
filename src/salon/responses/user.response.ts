@@ -6,15 +6,15 @@ export class UserResponse implements IUserResponse {
     @Expose()
     id: number;
 
-    @ApiProperty({ example: "user@example.com" })
+    @ApiProperty({ example: 'user@example.com' })
     @Expose()
     login: string;
 
-    @ApiProperty({ example: "+79001234567" })
+    @ApiProperty({ example: '+79001234567' })
     @Expose()
     phone: string;
 
-    @ApiProperty({ example: "John Doe" })
+    @ApiProperty({ example: 'John Doe' })
     @Expose()
     full_name: string;
 }
@@ -24,4 +24,4 @@ export interface IUserResponse {
     login: string;
     phone: string;
     full_name: string;
-} 
+}

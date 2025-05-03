@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SalonService } from './salon.service';
-import { SalonController } from './salon.controller';
+import { SalonController } from './controllers/record.controller';
 import { SalonRepository } from './salon.repository';
 import { PrismaClient } from '@prisma/client';
 
@@ -8,5 +8,4 @@ import { PrismaClient } from '@prisma/client';
     controllers: [SalonController],
     providers: [SalonService, PrismaClient, SalonRepository],
 })
-export class SalonModule {
-}
+export class SalonModule {}
