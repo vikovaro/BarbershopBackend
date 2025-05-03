@@ -1,25 +1,47 @@
-## Description
+## Nail salon Backend
 
-#### backend ip - http://localhost:3003/
-#### docs - http://localhost:3003/api
+Данное приложение является сервисом для управления маникюрным салоном, используя REST API подход.
 
-### Фронт должен быть на одном из следующих адресов:
-#### http://localhost:3001
-#### http://localhost:3002
-#### http://localhost:8080
+## Используемые технологии
 
-## Project setup
+- TypeScript
+- Node.js
+- Nest.js
+- bun
+- PostgreSQL
+- Prisma ORM
+- swagger
+- prettier/eslint
+
+## Запуск проекта
 
 ```bash
 bun install
 ```
 
-#### Для призмы необходимо прописать:
+#### Инициализация prisma:
 
 ```bash
 bun prisma generate
 bun prisma db push
 ```
+
+#### Содержимое .env файла:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
+```
+
+
+### CORS Policy
+Сервер настроен с политикой CORS, разрешающей запросы со следующих фронтенд-адресов:
+#### http://localhost:3001
+#### http://localhost:3002
+#### http://localhost:8080
+
+
+### backend ip - http://localhost:3003/
+### swagger docs - http://localhost:3003/api
 
 ## Содержимое .env файла:
 
