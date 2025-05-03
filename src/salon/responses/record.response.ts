@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { EmployeeResponse, IEmployeeResponse } from './employee.response';
 import { IServiceResponse, ServiceResponse } from './service.response';
+import { EStatus } from '../domain/status.enum';
 import { Status } from '@prisma/client';
 
 export class RecordResponse implements IRecordResponse {
@@ -37,7 +38,8 @@ export class RecordResponse implements IRecordResponse {
     @Expose()
     appointmentDatetime: Date;
 
-    @ApiProperty()
+    @ApiProperty({ enum: EStatus, enumName: 'Status' })
+    @Expose()
     status: Status;
 
     @ApiProperty({ example: 'Additional notes about the appointment', required: false })
