@@ -9,28 +9,28 @@ export class UpdateUserRequest {
     @Expose()
     id: number;
 
-    @ApiPropertyOptional({ example: "user@example.com" })
+    @ApiPropertyOptional({ example: 'user@example.com' })
     @IsString()
     @IsOptional()
     @Expose()
     login?: string;
 
-    @ApiPropertyOptional({ example: "password123" })
+    @ApiPropertyOptional({ example: 'password123' })
     @IsString()
     @IsOptional()
     @Min(6)
     @Expose()
     password?: string;
 
-    @ApiPropertyOptional({ example: "+79001234567" })
+    @ApiPropertyOptional({ example: '+79001234567' })
     @IsString()
     @IsOptional()
     @Expose()
     phone?: string;
 
-    @ApiPropertyOptional({ example: "John Doe" })
+    @ApiPropertyOptional({ example: 'John Doe' })
     @IsString()
     @IsOptional()
     @Expose()
     full_name?: string;
-} 
+}

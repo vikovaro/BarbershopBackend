@@ -16,13 +16,13 @@ export class UpdateRecordRequest implements IUpdateRecordRequest {
     @Expose()
     status?: EStatus;
 
-    @ApiPropertyOptional({ example: "Name Surname" })
+    @ApiPropertyOptional({ example: 'Name Surname' })
     @IsString()
     @IsOptional()
     @Expose()
     clientName?: string;
 
-    @ApiPropertyOptional({ example: "12345678" })
+    @ApiPropertyOptional({ example: '12345678' })
     @IsString()
     @IsOptional()
     @Min(1)
@@ -43,7 +43,7 @@ export class UpdateRecordRequest implements IUpdateRecordRequest {
     @Expose()
     serviceId?: number;
 
-    @ApiPropertyOptional({ example: "Additional notes about the appointment" })
+    @ApiPropertyOptional({ example: 'Additional notes about the appointment' })
     @IsString()
     @IsOptional()
     @Expose()
@@ -52,7 +52,7 @@ export class UpdateRecordRequest implements IUpdateRecordRequest {
 
 export interface IUpdateRecordRequest {
     id: number;
-    status?: EStatus,
+    status?: EStatus;
     clientName?: string;
     clientPhone?: string;
     employeeId?: number;

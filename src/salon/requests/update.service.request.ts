@@ -16,13 +16,12 @@ export class UpdateServiceRequest implements IUpdateServiceRequest {
     @Expose()
     price?: number;
 
-    @ApiPropertyOptional({ example: "ноготочки" })
+    @ApiPropertyOptional({ example: 'ноготочки' })
     @IsString()
     @IsOptional()
     @Expose()
     type?: string;
 }
-
 
 export interface IUpdateServiceRequest {
     id: number;

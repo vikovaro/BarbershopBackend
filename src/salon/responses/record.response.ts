@@ -9,11 +9,11 @@ export class RecordResponse implements IRecordResponse {
     @Expose()
     id: number;
 
-    @ApiProperty({ example: "Name Surname" })
+    @ApiProperty({ example: 'Name Surname' })
     @Expose()
     clientName: string;
 
-    @ApiProperty({ example: "123434" })
+    @ApiProperty({ example: '123434' })
     @Expose()
     clientPhone: string;
 
@@ -40,7 +40,7 @@ export class RecordResponse implements IRecordResponse {
     @ApiProperty()
     status: Status;
 
-    @ApiProperty({ example: "Additional notes about the appointment", required: false })
+    @ApiProperty({ example: 'Additional notes about the appointment', required: false })
     @Expose()
     notes?: string;
 }
@@ -53,7 +53,7 @@ export interface IRecordResponse {
     employee: IEmployeeResponse;
     serviceId: number;
     service: IServiceResponse;
-    appointmentDatetime: Date,
+    appointmentDatetime: Date;
     status: Status;
     notes?: string;
 }

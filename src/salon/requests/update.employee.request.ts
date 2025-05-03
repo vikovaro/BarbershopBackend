@@ -9,20 +9,19 @@ export class UpdateEmployeeRequest implements IUpdateEmployeeRequest {
     @Expose()
     id: number;
 
-    @ApiPropertyOptional({ example: "Name Surname" })
+    @ApiPropertyOptional({ example: 'Name Surname' })
     @IsString()
     @IsOptional()
     @Expose()
     name?: string;
 
-    @ApiPropertyOptional({ example: "123456789" })
+    @ApiPropertyOptional({ example: '123456789' })
     @IsString()
     @IsOptional()
     @Min(1)
     @Expose()
     employeePhone?: string;
 }
-
 
 export interface IUpdateEmployeeRequest {
     id: number;

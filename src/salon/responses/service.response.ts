@@ -10,7 +10,7 @@ export class ServiceResponse implements IServiceResponse {
     @Expose()
     price: number;
 
-    @ApiProperty({ example: "наращивание" })
+    @ApiProperty({ example: 'наращивание' })
     @Expose()
     type: string;
 }
