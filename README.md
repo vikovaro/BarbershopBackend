@@ -42,9 +42,3 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=publ
 
 ### backend ip - http://localhost:3003/
 ### swagger docs - http://localhost:3003/api
-
-## Содержимое .env файла:
-
-```bash
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
-```
