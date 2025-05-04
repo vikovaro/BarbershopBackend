@@ -16,7 +16,7 @@ export class UpdateServiceRequest implements IUpdateServiceRequest {
     @Expose()
     price?: number;
 
-    @ApiPropertyOptional({ example: 'ноготочки' })
+    @ApiPropertyOptional({ example: 'Укладка волос' })
     @IsString()
     @IsOptional()
     @Expose()
