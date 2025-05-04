@@ -4,8 +4,7 @@ import {
     Delete,
     Get,
     HttpStatus,
-    Patch,
-    Put,
+    Patch, Post,
     Query,
     SerializeOptions,
 } from '@nestjs/common';
@@ -21,7 +20,7 @@ import { EmployeeService } from '../services/employee.service';
 export class EmployeeController {
     constructor(private readonly employeeService: EmployeeService) {}
 
-    @Put('/employee/create')
+    @Post('/employee/create')
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'create employee',

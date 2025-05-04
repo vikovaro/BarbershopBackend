@@ -13,8 +13,8 @@ export class EmployeeRepository {
         return this.prisma.employee.create({
             data: {
                 name: createEmployeeRequest.name,
+                login: createEmployeeRequest.login,
                 employeePhone: createEmployeeRequest.employeePhone,
-                userId: createEmployeeRequest.userId,
             },
         });
     }
@@ -37,6 +37,7 @@ export class EmployeeRepository {
                 employeePhone: updateEmployeeRequest.employeePhone
                     ? updateEmployeeRequest.employeePhone
                     : undefined,
+                login: updateEmployeeRequest.login ? updateEmployeeRequest.login : undefined,
             },
         });
     }
@@ -45,6 +46,14 @@ export class EmployeeRepository {
         return this.prisma.employee.findUnique({
             where: {
                 id: id,
+            },
+        });
+    }
+
+    async getEmployeeByLogin(login: string) {
+        return this.prisma.employee.findUnique({
+            where: {
+                login: login,
             },
         });
     }

@@ -7,7 +7,7 @@ async function bootstrap() {
 
     const config = new DocumentBuilder()
         .setTitle('PC Assembler API')
-        .setDescription('API for Manik Salon:)')
+        .setDescription('API for Barbershop:)')
         .setVersion('1.0')
         .build();
     const document = SwaggerModule.createDocument(app, config);
@@ -21,8 +21,9 @@ async function bootstrap() {
         credentials: true,
     });
 
-    await app.listen(3003);
-    console.log(`Salon backend-app start at port 3003`);
+    const port = 3003;
+    await app.listen(port);
+    console.log(`Backend-app start at port ${port}`);
 }
 
 bootstrap();

@@ -3,18 +3,21 @@ import { CreateEmployeeRequest } from '../requests/create.employee.request';
 import { IEmployeeResponse } from '../responses/employee.response';
 import { IGetEmployeesResponse } from '../responses/get.employee.response';
 import { UpdateEmployeeRequest } from '../requests/update.employee.request';
-import { UserService } from './user.service';
 import { EmployeeRepository } from '../repositories/employee.repository';
+import { AppException } from '../errors/app-exception';
 
 @Injectable()
 export class EmployeeService {
-    constructor(
-        private readonly employeeRepository: EmployeeRepository,
-        private readonly userService: UserService,
-    ) {}
+    constructor(private readonly employeeRepository: EmployeeRepository) {}
 
     async createEmployee(createEmployeeRequest: CreateEmployeeRequest): Promise<IEmployeeResponse> {
-        await this.userService.getUserById(createEmployeeRequest.userId);
+        const employee = await this.employeeRepository.getEmployeeByLogin(
+            createEmployeeRequest.login,
+        );
+        if (employee) {
+            throw new AppException('Login already exists');
+        }
+
         return await this.employeeRepository.createEmployee(createEmployeeRequest);
     }
 

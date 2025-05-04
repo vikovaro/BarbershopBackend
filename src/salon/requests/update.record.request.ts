@@ -22,7 +22,7 @@ export class UpdateRecordRequest implements IUpdateRecordRequest {
     @Expose()
     clientName?: string;
 
-    @ApiPropertyOptional({ example: '12345678' })
+    @ApiPropertyOptional({ example: '+79991114455' })
     @IsString()
     @IsOptional()
     @Min(1)
