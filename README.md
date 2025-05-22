@@ -1,4 +1,4 @@
-## Nail salon Backend
+## Barbershop salon Backend
 
 Данное приложение является сервисом для управления барбершопом, используя REST API подход.
 
